@@ -1,0 +1,19 @@
+#!/bin/sh
+
+file=$1
+
+n=${#file}
+n3=`expr $n - 3`
+
+fileoutput=${file:0:$n3}
+
+rustc $file 
+
+if [ $? == 0 ]
+then
+    echo "=========output========"
+    ./${fileoutput}
+elif [ $? == 1 ]
+then
+    echo "==========Soemthing wrong======"
+fi
