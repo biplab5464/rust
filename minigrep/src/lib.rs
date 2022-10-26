@@ -7,14 +7,23 @@ pub struct Config{
 }
 
 impl Config {
-    pub fn build( args: &[String]) -> Result<Config , &'static str> {
-        if args.len() != 3 {
-            return Err("so We Need Two arguments \"File name\" and \"string\" ");
-        }
-
+    pub fn build( mut args: impl Iterator<Item = String>) -> Result<Config , &'static str> {
+       
         let ignore_case = std::env::var("IGNORE_CASE").is_ok();
 
-        Ok(Config { query: args[1].clone(), file_path: args[2].clone(), ignore_case  })
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file path"),
+        };
+
+        Ok(Config { query, file_path, ignore_case })
     }
 }
 
