@@ -1,4 +1,4 @@
-use std::{fs, result};
+use std::fs;
 
 pub struct Config{
     pub query : String,
@@ -8,9 +8,7 @@ pub struct Config{
 
 impl Config {
     pub fn build( mut args: impl Iterator<Item = String>) -> Result<Config , &'static str> {
-       
-        let ignore_case = std::env::var("IGNORE_CASE").is_ok();
-
+    
         args.next();
 
         let query = match args.next() {
@@ -21,6 +19,19 @@ impl Config {
         let file_path = match args.next() {
             Some(arg) => arg,
             None => return Err("Didn't get a file path"),
+        };
+
+        let mut ignore_case = false;
+        // match  args.next(){
+        //     Some(str) => {
+        //         if str == "i" { ignore_case = true }
+        //     },
+        //     None => ignore_case = false
+        // };
+        
+        if let Some(c) = args.next() {
+            if c == "i" { ignore_case = true }
+            else { ignore_case = false }
         };
 
         Ok(Config { query, file_path, ignore_case })
