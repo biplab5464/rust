@@ -22,13 +22,6 @@ impl Config {
         };
 
         let mut ignore_case = false;
-        // match  args.next(){
-        //     Some(str) => {
-        //         if str == "i" { ignore_case = true }
-        //     },
-        //     None => ignore_case = false
-        // };
-        
         if let Some(c) = args.next() {
             if c == "i" { ignore_case = true }
             else { ignore_case = false }
