@@ -48,3 +48,32 @@ fn for_loop(){
     //iter() just thought value
     // iter().enumerate() return a tupele wiht (index or value)
 }
+
+fn pattern_in_match_1(){
+    let x = Some(5);
+    let y = 20;
+    
+    match x {
+        Some(50) => println!("Got 50"),  // this line will be false it will match the inside variable (50) 
+        Some(y) => println("got y = {}",y),  //this will match as y will be generic and take any value inside Some that is 5
+        _ => println("Default case, x = {:?}", x),  // this would have match if x was none and it would print None
+    }
+    //** the variable in Some(y) is not the same with the variable above it part of match block
+}
+
+fn patter_in_match_2(){
+    let x =1;
+
+    match x{
+        1 | 2 => println!("one or two"),   // | - it kinda acts like 'or' 
+        3 => println!("three"),
+        _ => println!("Something else"),
+    }
+
+    let y = 5;
+
+    match x {
+        1..=5 => println!("one thought 5"),
+        _ => println!("Something else"),
+    }
+}
