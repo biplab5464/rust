@@ -22,17 +22,15 @@ fn main(){
 
 */
 fn handle_connection(mut stream :TcpStream){
-     let buf_reader = BufReader::new(&mut stream);
+     let buf_reader = BufReader::new(&mut stream); //store the request in buf-reader
 
-     let request_line = buf_reader.lines().next().unwrap().unwrap();
+     let request_line = buf_reader.lines().next().unwrap().unwrap(); //fetch the request line it is on first so, we are grabbing it next()
 
      let (status_line, contents) = if request_line == "GET / HTTP/1.1"{
          ("HTTP/1.1 200 OK", fs::read_to_string("hello.html").unwrap())
-
      }else{
          ("HTTP/1.1 404 NOT FOUND", fs::read_to_string("404.html").unwrap())
      };
-    let response = format!("{}\r\nContent-Length: {}\r\n\r\n{}", status_line,contents.len(),contents );
-     stream.write_all(response.as_bytes()).unwrap();
-
+    let response = format!("{}\r\nContent-Length: {}\r\n\r\n{}", status_line,contents.len(),contents );  //formatting accoding to send request
+     stream.write_all(response.as_bytes()).unwrap();  //sending the responds
 }
