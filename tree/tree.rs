@@ -44,5 +44,15 @@ fn main(){
         }))
     }));
 
+    let farther_node = &mut tree.root.left.as_mut().unwrap();
+
+    //println!("Tree - {:?}",farther_node.left);
+    farther_node.left = Some(Box::new(TreeNode{
+        data : 122,
+        left : None,
+        right : None
+        
+    }));
     println!("Tree - {:?}",tree);
+
 }
