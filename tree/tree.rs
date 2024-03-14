@@ -55,6 +55,7 @@ fn main(){
     }));
     println!("Tree - {:?}",tree);
 
+    insert(&mut tree.root,47);
 
     // traversal of tree
     print!("Tree -> ");
@@ -84,5 +85,29 @@ fn postOrder(tree : &Node){
         inOrder(&node.left);
         inOrder(&node.right);
         print!("{},",node.data);
+    }
+}
+
+fn insert(tree : &mut Node,ele : u32){
+    let mut my_node = tree.as_mut().unwrap();
+ 
+    let new_node = Some(Box::new(TreeNode{
+        data : ele,
+        left : None,
+        right : None
+    }));
+
+    if my_node.data < ele {
+        if my_node.left.is_none(){
+            my_node.left = new_node;
+        }else{
+            insert(&mut my_node.left,ele);
+        }
+    }else{
+        if my_node.right.is_none(){
+            my_node.right = new_node;
+        }else{
+            insert(&mut my_node.right,ele);
+        }
     }
 }
