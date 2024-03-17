@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::fmt::{self, Formatter, Display};
 
 #[derive(Debug)]
 struct TreeNode{
@@ -29,7 +30,8 @@ fn main(){
     insert(&mut tree.root,47);
     insert(&mut tree.root,63);
 
-    println!("Tree - {:?}",tree);
+    //println!("Tree - {:?}",tree);
+    display(&tree);
     // traversal of tree
     print!("Tree -> ");
     inOrder(&tree);
@@ -108,4 +110,22 @@ fn search(tree : &Node, ele : u32) -> bool{
         }
     }
     false
+}
+
+fn display(tree : &Tree){
+    display_tree(&tree.root);
+    print!("\n");
+}
+
+fn display_tree(node: &Node) {
+    if let Some(ref inner) = node {
+        print!("( [{}] ", inner.data); 
+        print!(" left :"); 
+        display_tree(&inner.left);
+        print!(" right :"); 
+        display_tree(&inner.right);
+        print!(" )"); 
+    } else {
+        print!(" None");
+    }
 }
