@@ -37,6 +37,8 @@ fn main(){
     inOrder(&tree);
     println!();
     println!("did you find the ele {}",search(&tree.root,45));
+    println!("number of node in the {}",total_node(&tree));
+    println!("number of leaf node in the {}",total_leaf_node(&tree));
 
 }
 
@@ -127,5 +129,35 @@ fn display_tree(node: &Node) {
         print!(" )"); 
     } else {
         print!(" None");
+    }
+}
+
+fn total_node( tree : &Tree ) -> usize {
+    let mut count_node : usize = 0;  
+    count(&tree.root,&mut count_node);
+    count_node
+}
+
+fn count(tree : &Node, count_node  : &mut usize){
+    if let Some(node) = tree{
+        count(&node.left,count_node);
+        *count_node +=1;
+        count(&node.right,count_node);
+    }
+}
+
+fn total_leaf_node( tree : &Tree ) -> usize {
+    let mut count_node : usize = 0;  
+    count_leaf(&tree.root,&mut count_node);
+    count_node
+}
+
+fn count_leaf(tree : &Node, count_node  : &mut usize){
+    if let Some(node) = tree{
+        count_leaf(&node.left,count_node);
+        if node.left.is_none() && node.right.is_none(){
+            *count_node +=1;
+        }
+        count_leaf(&node.right,count_node);
     }
 }
