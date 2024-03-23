@@ -19,11 +19,32 @@ impl Tree{
 
     fn create_root(data : u32)-> Tree{
         Tree{
-            root : Some(Box::new(TreeNode{
-            data,
-            left : None,
-            right : None
-        }))}
+            root : Some(Box::new(
+                TreeNode{
+                    data,
+                    left : None,
+                    right : None
+                }
+            ))
+        }
+    }
+
+    fn tree_from_sorted_array( arr : &[u32]) -> Tree {
+        Tree{
+            root : Self::insert_sorted(arr)
+        }
+    }
+
+    fn insert_sorted(arr : &[u32]) -> Option<Box<TreeNode>> {
+        if arr.is_empty() { return None;}
+        let mid = arr.len()/2;
+        let mut root =TreeNode{
+            data : arr[mid],
+            left : Self::insert_sorted(&arr[..mid]),
+            right : Self::insert_sorted(&arr[mid+1..]) 
+        };
+
+        Some(Box::new(root))
     }
 
     fn in_order(&self){
@@ -66,8 +87,6 @@ impl Tree{
             Self:: post_order_traversal(&node.left);
             Self::post_order_traversal(&node.right);
             print!("{},",node.data);
-    }
-    }
         }
     }
     
@@ -161,16 +180,36 @@ impl Tree{
             Self::count_leaf(&node.right,count_node);
         }
     }
+
+    fn depth(&self) -> usize{
+        Self::max_depth(&self.root)
+    }
+
+    fn max_depth(tree : &Node) -> usize {
+        match tree {
+            Some(node) => {
+                let left = Self::max_depth(&node.left);
+                let right = Self::max_depth(&node.right);
+
+                std::cmp::max(left,right) + 1
+            },
+            None => 0
+        }
+    }
 }
 
 fn main(){
 
-    let mut tree = Tree::create_root(53);
+    let mut tree = Tree::tree_from_sorted_array(&[15,32,52,82,100]);
     tree.insert(32);
     tree.insert(78);
     tree.insert(45);
     tree.insert(47);
     tree.insert(63);
+    tree.insert(25);
+    tree.insert(35);
+    tree.insert(56);
+    tree.insert(72);
 
     //println!("Tree - {:?}",tree);
     tree.display();
@@ -179,9 +218,10 @@ fn main(){
     tree.pre_order();
     tree.post_order();
 
-    println!("did you find the ele {}",tree.search(45));
-    println!("number of node in the {}",tree.total_node());
-    println!("number of leaf node in the {}",tree.total_leaf_node());
+    println!("Did you find the ele {}",tree.search(45));
+    println!("Number of node in the {}",tree.total_node());
+    println!("Number of leaf node in the {}",tree.total_leaf_node());
+    println!("Depth of the tree {}",tree.depth());
 
 }
 
