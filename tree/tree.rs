@@ -132,6 +132,21 @@ impl Tree{
         }
         false
     }
+
+    fn search_path(&self,ele : u32){
+        Self::search_node_path(&self.root,ele,String::new())
+    }
+
+    fn search_node_path(tree : &Node, ele : u32, s : String) {
+        if let Some(node) = tree{
+            return match ele.cmp(&node.data){
+                Ordering::Less => Self::search_node_path(&node.left,ele,format!("{}{}->",s,node.data)),
+                Ordering::Equal => println!("{}{}",s,node.data),
+                Ordering::Greater => Self::search_node_path(&node.right,ele,format!("{}{}->",s,node.data)),
+            }
+        }
+        println!("Element not found")
+    }
     
     fn display(&self){
         Self::display_tree(&self.root);
@@ -196,6 +211,25 @@ impl Tree{
             None => 0
         }
     }
+
+    fn print_path(&self) {
+        println!("Allpath->");
+        Self::path(&self.root,String::new());
+    }
+
+    fn path(root : &Node,s : String){
+        match root {
+            Some(node) => {
+                if node.left.is_none() && node.right.is_none(){
+                    println!("{}{}",s,node.data);
+                }else{
+                    Self::path(&node.left,format!("{}{}->",s,node.data));
+                    Self::path(&node.right,format!("{}{}->",s,node.data));
+                }
+            },
+            None => {}
+        }
+    }
 }
 
 fn main(){
@@ -218,10 +252,12 @@ fn main(){
     tree.pre_order();
     tree.post_order();
 
-    println!("Did you find the ele {}",tree.search(45));
+    println!("Did you find the ele {} \n and the path is ",tree.search(45));
+    tree.search_path(45);
     println!("Number of node in the {}",tree.total_node());
     println!("Number of leaf node in the {}",tree.total_leaf_node());
     println!("Depth of the tree {}",tree.depth());
+    tree.print_path();
 
 }
 
