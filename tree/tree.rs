@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 use std::fmt::{self, Formatter, Display};
+use std::collections::VecDeque;
 
 #[derive(Debug)]
 struct TreeNode{
@@ -230,6 +231,32 @@ impl Tree{
             None => {}
         }
     }
+
+    fn lever_order(&self){
+        Self::level_order_traversal(&self.root);
+    }
+
+    fn level_order_traversal(root : &Node) {
+        
+        let mut queue = VecDeque::new();
+        queue.push_back(root);
+
+        print!("Level order traversal -> ");
+        while let Some(node_ref) = queue.pop_front(){
+            let node_ref = node_ref.as_ref().unwrap();
+            print!("{},",node_ref.data);
+
+            if node_ref.left.is_some(){
+                queue.push_back(&node_ref.left);
+            } 
+
+            if node_ref.right.is_some(){
+                queue.push_back(&node_ref.right);
+            } 
+        }
+        print!("\n");
+            
+    }
 }
 
 fn main(){
@@ -258,6 +285,7 @@ fn main(){
     println!("Number of leaf node in the {}",tree.total_leaf_node());
     println!("Depth of the tree {}",tree.depth());
     tree.print_path();
+    tree.lever_order();
 
 }
 
